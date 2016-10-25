@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".LoginActivity"
-    android:background="#24323d">
+    android:background="@drawable/teacher1">
 
 
     <Button
@@ -22,48 +22,52 @@
         android:textColor="#FFFFFFFF"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/login"
-        android:layout_alignEnd="@+id/login" />
+        android:layout_alignEnd="@+id/login"
+        android:elevation="@dimen/achidimen" />
 
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="40dp"
         android:id="@+id/password"
-        android:background="@drawable/shape"
-        android:hint="Password"
+        android:background="@color/common_google_signin_btn_text_dark_default"
+        android:hint="*********"
         android:gravity="center_vertical|center_horizontal"
         android:password="true"
         android:singleLine="true"
-        android:textColorHint="#FFFFFFFF"
-        android:textColor="#FFFFFFFF"
+        android:textColorHint="@color/common_google_signin_btn_text_light_focused"
+        android:textColor="@android:color/black"
         android:layout_above="@+id/remcred"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="19dp" />
+        android:layout_marginBottom="19dp"
+        android:elevation="@dimen/achidimen" />
 
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="40dp"
         android:id="@+id/un"
-        android:background="@drawable/shape"
+        android:background="@color/common_google_signin_btn_text_dark_default"
         android:gravity="center_vertical|center_horizontal"
-        android:hint="Username"
+        android:hint="Email"
         android:singleLine="true"
-        android:textColor="#FFFFFFFF"
-        android:textColorHint="#FFFFFFFF"
+        android:textColor="@android:color/black"
+        android:textColorHint="@color/common_google_signin_btn_text_light_focused"
         android:layout_above="@+id/password"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="22dp" />
+        android:layout_marginBottom="22dp"
+        android:elevation="@dimen/achidimen" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Remember Credentials"
         android:id="@+id/remcred"
-        android:checked="false"
         android:textColor="#FFFFFFFF"
         android:allowUndo="false"
         android:buttonTint="#c8c8c8"
         android:layout_above="@+id/suwg"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        tools:buttonTintMode="src_atop"
+        android:checked="false" />
 
     <Button
         android:text="Signup/Signin with google"
@@ -74,7 +78,8 @@
         android:layout_alignParentStart="true"
         android:background="@android:color/holo_red_dark"
         android:layout_alignParentEnd="true"
-        android:textColor="@color/common_google_signin_btn_text_dark_default" />
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:elevation="@dimen/achidimen" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -86,14 +91,22 @@
         android:textColor="#FFFFFFFF"
         android:layout_above="@+id/signin"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:elevation="@dimen/achidimen" />
 
     <ImageView
         android:layout_width="150dp"
         android:layout_height="150dp"
         app:srcCompat="@drawable/m"
         android:id="@+id/imageView2"
+        android:layout_marginStart="81dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="78dp"
+        android:layout_marginBottom="22dp"
+        android:layout_above="@+id/un"
+        android:layout_alignParentEnd="true"
+        android:elevation="@dimen/achidimen" />
 
 </RelativeLayout>

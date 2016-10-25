@@ -2,32 +2,29 @@ package com.example.achintyasai.myapplication;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.StrictMode;
-import android.support.annotation.FloatRange;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -40,7 +37,6 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -49,6 +45,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String latitude;
     String longitude;
     String user_id;
+    Button logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +55,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         latitude = bundle.getString("latitude");
         longitude = bundle.getString("longitude");
         user_id = bundle.getString("user_id");
+        logout = (Button)findViewById(R.id.logout);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -78,26 +76,43 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         final ArrayList <String> subject = MapsActivity.getResults(IpAddress.ip_address+"/get_user_id.php?opt=subject&latitude="+latitude+"&longitude="+longitude);
         final ArrayList <String> role = MapsActivity.getResults(IpAddress.ip_address+"/get_user_id.php?opt=role&latitude="+latitude+"&longitude="+longitude);
 
+       logout.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               SharedPreferences.Editor editprefs = getBaseContext().getSharedPreferences("JUSPAY", MODE_PRIVATE).edit();
+                editprefs.clear();
+               editprefs.commit();
+               Intent intent = new Intent(MapsActivity.this,LoginActivity.class);
+               startActivity(intent);
+               finish();
+           }
+       });
         ArrayList<Marker> markers = new ArrayList<Marker>();
          final Map<Marker, String> allMarkersMap = new HashMap<Marker, String>();
-        for(int j=0;j<lat.size();j++){
+        if(usrid.size()==1)
+            Toast.makeText(getBaseContext(),"No registered teachers or learners in your surroundings",Toast.LENGTH_LONG).show();
+        for(int j=0;j<usrid.size();j++){
+            double lati = Double.parseDouble(lat.get(j));
+            double longi = Double.parseDouble(lng.get(j));
             final int finalk = j;
 
             DecimalFormat df = new DecimalFormat("#.##");
             df.setRoundingMode(RoundingMode.CEILING);
                if(user_id.equals(usrid.get(j))) {
-                   continue;
+                   mMap.addMarker(new MarkerOptions().position(new LatLng(lati,longi))
+                   .title("Your("+usrnm.get(j).toString()+") Location"));
                }
                else {
-                   double lati = Double.parseDouble(lat.get(j));
-                   double longi = Double.parseDouble(lng.get(j));
+
                    if(role.get(j).equals("teacher")) {
-                       Marker marker = mMap.addMarker(new MarkerOptions()
+                        Marker marker = mMap.addMarker(new MarkerOptions()
                                .position(new LatLng(lati, longi))
                                .title("" + usrnm.get(j))
                                .snippet("Subject : " + subject.get(j) + "\nDistance : " + df.format(Double.parseDouble(dist.get(j))) + "km\nClick to contact")
                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.teacher)));
                        allMarkersMap.put(marker, phnum.get(j));
+                       mMap.moveCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
+                       mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
                    }
                    else if(role.get(j).equals("student"))
                    {
@@ -107,6 +122,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                .snippet("Subject : " + subject.get(j) + "\nDistance : " + df.format(Double.parseDouble(dist.get(j))) + "km\nClick to contact")
                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.learner)));
                        allMarkersMap.put(marker, phnum.get(j));
+                       mMap.moveCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
+                       mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
                    }
                    final int finalJ1 = j;
                    Log.i("finalj",""+j);

@@ -2,6 +2,7 @@ package com.example.achintyasai.myapplication;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -54,6 +55,7 @@ public class Signup extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         setTitle("Signup through MEETUTU");
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         ArrayList <String> list = getResults(IpAddress.ip_address+"/subjects.php");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,list);
@@ -98,19 +100,25 @@ public class Signup extends AppCompatActivity {
             public void onClick(View view) {
                 String un1 = username.getText().toString().replaceAll(" ","%20");
                 String subject1 = subject.getText().toString().replaceAll(" ","%20");
+                String role="";
                 if(un1.equals("")||address.getText().toString().equals("")||password.getText().toString().equals("")||retype.getText().toString().equals("")||phnum.getText().toString().equals("")||subject1.equals("")){
                     Toast.makeText(getBaseContext(), "All fields are mandatory", Toast.LENGTH_SHORT).show();
                 }else{
                     String pass = password.getText().toString();
                     String rety = retype.getText().toString();
+                    if(teacher.isChecked())
+                        role="teacher";
+                    else if(student.isChecked())
+                        role ="student";
                     if (pass.equals(rety)) {
                         PostingUsingVolleyLibrary pv = new PostingUsingVolleyLibrary(getBaseContext());
                         Log.i("lat",latitude[0]);
                         Log.i("long",longitude[0]);
-                        if(!pv.postToweb(username.getText().toString(),address.getText().toString(),password.getText().toString(),phnum.getText().toString(),subject.getText().toString(),"student",latitude[0],longitude[0]))
+                        if(!pv.postToweb(username.getText().toString(),address.getText().toString(),password.getText().toString(),phnum.getText().toString(),subject.getText().toString(),""+role,latitude[0],longitude[0]))
                         {
                             Intent intent = new Intent(Signup.this,LoginActivity.class);
                             startActivity(intent);
+                            finish();
                         }
                         else
                         {

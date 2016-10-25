@@ -3,6 +3,8 @@ package com.example.achintyasai.myapplication;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -39,6 +41,7 @@ String name,passwd;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setTitle("Login");
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         suwg = (Button)findViewById(R.id.suwg);
 
 
@@ -52,7 +55,7 @@ String name,passwd;
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        SharedPreferences prefs = getSharedPreferences("TEAM_REQ", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("JUSPAY", MODE_PRIVATE);
         name = prefs.getString("name", "");//"No name defined" is the default value.
         passwd = prefs.getString("password",""); //0 is the default value.
 
@@ -70,120 +73,122 @@ String name,passwd;
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this,Signup.class);
                 startActivity(intent);
-                finish();
             }
         });
 
         suwg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                suwg.setBackgroundColor(Color.parseColor("#ffff4444"));
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                 startActivityForResult(signInIntent, 9001);
+
             }
         });
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(remcred.isChecked()==true)
+                if(username.getText().toString().equals("")||password.getText().toString().equals(""))
                 {
-                    SharedPreferences.Editor editor = getSharedPreferences("TEAM_REQ", MODE_PRIVATE).edit();
-                    editor.putString("name", username.getText().toString());
-                    editor.putString("password",password.getText().toString() );
-                    editor.commit();
-                    try {
-                        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                        StrictMode.setThreadPolicy(policy);
-                        HttpURLConnection con = (HttpURLConnection) (new URL(IpAddress.ip_address+"/login.php?email="+username.getText().toString()+"&pass="+password.getText().toString())).openConnection();
-                        con.setRequestMethod("GET");
-                        con.setDoInput(true);
-                        con.setDoOutput(true);
-                        con.connect();
-                        InputStream is = con.getInputStream();
-                        BufferedReader bufferedWriter = new BufferedReader(new InputStreamReader(is, "iso-8859-1"));
-                        String a[] = new String[10];
-                        a[0] = "0";
-                        a[1] = "0";
-                        a[2] = "0";
-                        a[3] = "0";
-                        a[4] = "0";
-                        String line = "";
-                        int i = -1;
-                        while ((line = bufferedWriter.readLine()) != null) {
-                            i++;
-                            a[i] = line;
-                            Log.i("a["+i+"]",a[i]);
-                        }
-                        if(a[0]=="0"||a[1]=="0") {
-                            Toast.makeText(LoginActivity.this, "wrong credentials", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
-                            intent.putExtra("user_id",a[2]);
-                            intent.putExtra("user_name",a[0]);
-                            intent.putExtra("latitude",a[3]);
-                            intent.putExtra("longitude",a[4]);
-                            startActivity(intent);
-                            finish();
-
-                            bufferedWriter.close();
-                            is.close();
-                            con.disconnect();
-                        }
-                    } catch (Exception e) {
-                        Log.e("log_tag", "Error in http connection" + e.toString());
-                        username.setText("");
-                        password.setText("");
-                    }
+                    Toast.makeText(LoginActivity.this, "Fill up al the fields", Toast.LENGTH_SHORT).show();
                 }
-                else
-                {
-                    try {
-                        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                        StrictMode.setThreadPolicy(policy);
-                        HttpURLConnection con = (HttpURLConnection) (new URL(IpAddress.ip_address+"/login.php?email="+username.getText().toString()+"&pass="+password.getText().toString())).openConnection();
-                        con.setRequestMethod("GET");
-                        con.setDoInput(true);
-                        con.setDoOutput(true);
-                        con.connect();
-                        InputStream is = con.getInputStream();
-                        BufferedReader bufferedWriter = new BufferedReader(new InputStreamReader(is, "iso-8859-1"));
-                        String a[] = new String[10];
-                        a[0] = "0";
-                        a[1] = "0";
-                        a[2] = "0";
-                        a[3] = "0";
-                        a[4] = "0";
-                        String line = "";
-                        int i = -1;
-                        while ((line = bufferedWriter.readLine()) != null) {
-                            i++;
-                            a[i] = line;
-                            Log.i("a["+i+"]",a[i]);
+                else {
+                    if (remcred.isChecked() == true) {
+                        SharedPreferences.Editor editor = getSharedPreferences("JUSPAY", MODE_PRIVATE).edit();
+                        editor.putString("name", username.getText().toString());
+                        editor.putString("password", password.getText().toString());
+                        editor.commit();
+                        try {
+                            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                            StrictMode.setThreadPolicy(policy);
+                            HttpURLConnection con = (HttpURLConnection) (new URL(IpAddress.ip_address + "/login.php?email=" + username.getText().toString() + "&pass=" + password.getText().toString())).openConnection();
+                            con.setRequestMethod("GET");
+                            con.setDoInput(true);
+                            con.setDoOutput(true);
+                            con.connect();
+                            InputStream is = con.getInputStream();
+                            BufferedReader bufferedWriter = new BufferedReader(new InputStreamReader(is, "iso-8859-1"));
+                            String a[] = new String[10];
+                            a[0] = "0";
+                            a[1] = "0";
+                            a[2] = "0";
+                            a[3] = "0";
+                            a[4] = "0";
+                            String line = "";
+                            int i = -1;
+                            while ((line = bufferedWriter.readLine()) != null) {
+                                i++;
+                                a[i] = line;
+                                Log.i("a[" + i + "]", a[i]);
+                            }
+                            if (a[0] == "0" || a[1] == "0") {
+                                Toast.makeText(LoginActivity.this, "wrong credentials", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
+                                intent.putExtra("user_id", a[2]);
+                                intent.putExtra("user_name", a[0]);
+                                intent.putExtra("latitude", a[3]);
+                                intent.putExtra("longitude", a[4]);
+                                startActivity(intent);
+                                finish();
 
+                                bufferedWriter.close();
+                                is.close();
+                                con.disconnect();
+                            }
+                        } catch (Exception e) {
+                            Log.e("log_tag", "Error in http connection" + e.toString());
+                            username.setText("");
+                            password.setText("");
                         }
-                        if(a[0]=="0"||a[1]=="0") {
-                            Toast.makeText(LoginActivity.this, "wrong credentials", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
-                            intent.putExtra("user_id",a[2]);
-                            intent.putExtra("user_name",a[0]);
-                            intent.putExtra("latitude",a[3]);
-                            intent.putExtra("longitude",a[4]);
-                            startActivity(intent);
-                            finish();
+                    } else {
+                        try {
+                            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                            StrictMode.setThreadPolicy(policy);
+                            HttpURLConnection con = (HttpURLConnection) (new URL(IpAddress.ip_address + "/login.php?email=" + username.getText().toString() + "&pass=" + password.getText().toString())).openConnection();
+                            con.setRequestMethod("GET");
+                            con.setDoInput(true);
+                            con.setDoOutput(true);
+                            con.connect();
+                            InputStream is = con.getInputStream();
+                            BufferedReader bufferedWriter = new BufferedReader(new InputStreamReader(is, "iso-8859-1"));
+                            String a[] = new String[10];
+                            a[0] = "0";
+                            a[1] = "0";
+                            a[2] = "0";
+                            a[3] = "0";
+                            a[4] = "0";
+                            String line = "";
+                            int i = -1;
+                            while ((line = bufferedWriter.readLine()) != null) {
+                                i++;
+                                a[i] = line;
+                                Log.i("a[" + i + "]", a[i]);
 
-                            bufferedWriter.close();
-                            is.close();
-                            con.disconnect();
+                            }
+                            if (a[0] == "0" || a[1] == "0") {
+                                Toast.makeText(LoginActivity.this, "wrong credentials", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
+                                intent.putExtra("user_id", a[2]);
+                                intent.putExtra("user_name", a[0]);
+                                intent.putExtra("latitude", a[3]);
+                                intent.putExtra("longitude", a[4]);
+                                startActivity(intent);
+                                finish();
+
+                                bufferedWriter.close();
+                                is.close();
+                                con.disconnect();
+                            }
+                        } catch (Exception e) {
+                            Log.e("log_tag", "Error in http connection" + e.toString());
+                            username.setText("");
+                            password.setText("");
                         }
-                    } catch (Exception e) {
-                        Log.e("log_tag", "Error in http connection" + e.toString());
-                        username.setText("");
-                        password.setText("");
+
                     }
-
                 }
             }
         });

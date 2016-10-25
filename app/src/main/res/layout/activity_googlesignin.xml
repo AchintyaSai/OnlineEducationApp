@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.achintyasai.myapplication.googlesignin"
-    android:background="#24323d">
+    android:background="@drawable/teacher1">
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -22,24 +22,6 @@
         android:textColor="#FFFFFFFF"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
-
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:id="@+id/wn"
-        android:ellipsize="start"
-        android:background="@drawable/shape"
-        android:hint="Whatsapp Number"
-        android:paddingLeft="10dp"
-        android:outlineProvider="bounds"
-        android:typeface="serif"
-        android:gravity="center_vertical|center_horizontal"
-        android:singleLine="true"
-        android:textColorHint="#80ffffff"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true"
-        android:inputType="phone"
-        android:textColor="#FFFFFFFF" />
 
     <Button
         android:layout_width="wrap_content"
@@ -66,7 +48,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/Teacher"
             android:layout_weight="1"
-            android:textColor="#FFFFFFFF" />
+            android:textColor="@color/common_google_signin_btn_text_dark_default" />
 
         <RadioButton
             android:text="Student"
@@ -74,19 +56,19 @@
             android:layout_height="wrap_content"
             android:id="@+id/student"
             android:layout_weight="1"
-            android:textColor="#FFFFFFFF" />
+            android:textColor="@color/common_google_signin_btn_text_dark_default" />
     </RadioGroup>
 
     <AutoCompleteTextView
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:id="@+id/subject"
-        android:background="@drawable/shape"
+        android:background="@color/common_google_signin_btn_text_dark_default"
         android:paddingLeft="10dp"
         android:gravity="center_vertical|center|clip_horizontal"
-        android:textColorHint="#80ffffff"
+        android:textColorHint="@color/common_google_signin_btn_text_light_focused"
         android:hint="Subject"
-        android:textColor="#FFFFFFFF"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:layout_below="@+id/wn"
         android:layout_alignParentStart="true"
         android:layout_marginTop="20dp" />
@@ -99,6 +81,27 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginStart="81dp"
-        android:layout_marginTop="32dp" />
+        android:layout_marginTop="32dp"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentRight="false" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:id="@+id/wn"
+        android:ellipsize="start"
+        android:background="@color/common_google_signin_btn_text_dark_default"
+        android:hint="Whatsapp Number"
+        android:paddingLeft="10dp"
+        android:outlineProvider="bounds"
+        android:typeface="serif"
+        android:gravity="center_vertical|center_horizontal"
+        android:singleLine="true"
+        android:textColorHint="@color/common_google_signin_btn_text_light_focused"
+        android:inputType="phone"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

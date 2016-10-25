@@ -5,5 +5,5 @@ package com.example.achintyasai.myapplication;
  */
 
 public class IpAddress {
-    public static String ip_address = "http://192.168.0.108/juspay";
+    public static String ip_address = "http://220.225.230.11:8086/juspay";
 }

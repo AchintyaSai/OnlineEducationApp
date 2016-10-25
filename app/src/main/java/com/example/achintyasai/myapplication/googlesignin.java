@@ -2,6 +2,7 @@ package com.example.achintyasai.myapplication;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
@@ -43,6 +44,7 @@ public class googlesignin extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_googlesignin);
         setTitle("Signup through google");
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Bundle bundle = getIntent().getExtras();
 
         final double[] latitude = {0.000};
@@ -67,6 +69,7 @@ public class googlesignin extends AppCompatActivity{
                 {
                     Intent intent = new Intent(googlesignin.this,LoginActivity.class);
                     startActivity(intent);
+                    finish();
                 }
                 else
                 {

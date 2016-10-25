@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
+import android.widget.Toast;
 
 public class GPStrace extends Service implements LocationListener{
 private final Context context;
@@ -33,7 +34,7 @@ public Location getLocation()
         locationManager=(LocationManager) context.getSystemService(LOCATION_SERVICE);
         isGPSEnabled=locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);        isNetworkEnabled=locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         if(!isGPSEnabled && !isNetworkEnabled){
-         
+            Toast.makeText(getBaseContext(),"Location or network is not enabled",Toast.LENGTH_LONG).show();
         }else{
             this.canGetLocation=true;
             if(isNetworkEnabled){              
@@ -42,7 +43,8 @@ public Location getLocation()
                     MIN_TIME_BW_UPDATES,
                     MIN_DISTANCE_CHANGE_FOR_UPDATES,this);                  
                 }
-                if(locationManager!=null){                    location=locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                if(locationManager!=null){
+                    location=locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                     if(location !=null){
                         latitude=location.getLatitude();
                         longtitude=location.getLongitude();                      
@@ -50,7 +52,8 @@ public Location getLocation()
                 }
             }
             if(isGPSEnabled){
-                if(location==null){                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                if(location==null){
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
                     if(locationManager!=null){
                         location=locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                     if(location!=null){
