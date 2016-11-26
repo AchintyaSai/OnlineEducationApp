@@ -1,8 +1,0 @@
-1.This is MEETUTU app which shows all the registered users(teachers,learners) who are in one kilometer radius
-2.It has less activities which could be easily understood by the user.
-3.Registration should be done by the user along with the location which should be shown to other users on map.
-4.Location will be taken just by clicking on GET LOCATION button in the signup form by enabling location services.
-5.Registration can also be directly done by using user's google account and by giving other info.
-6.User will click on a marker which will show the details of the existing user.
-7.On clicking the snippet,whatsapp conversatio will be started.
-8.On clicking the logout button logs out from the app.
